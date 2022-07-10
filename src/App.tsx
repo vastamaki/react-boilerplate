@@ -1,12 +1,14 @@
-import { PrivateRoute } from "@components/private-route";
-import Frontpage from "@views/frontpage";
-import React, { useEffect, useState } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
-import { useStateValue } from "./context";
+import { PrivateRoute } from "components/private-route";
+import Frontpage from "views/frontpage";
+import { useEffect, useState } from "react";
+import { Routes, Route } from "react-router-dom";
+import { useStateValue } from "context";
+import LoadingPage from "components/loading-spinner";
 
 function App() {
   const [{ auth }, dispatch]: any = useStateValue();
   const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     (async () => {
       const access_token = localStorage.getItem("access_token");
@@ -17,22 +19,39 @@ function App() {
           payload: true,
         });
       }
+      setLoading(false);
     })();
-  }, []);
+  }, [dispatch]);
 
-  if (loading) {
-    return (
-      <div>
-        <h1>loading..</h1>
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <LoadingPage />
+  //   );
+  // }
 
   return (
-    <Routes>
-      <Route path="/" element={<Frontpage />} />
-      <PrivateRoute />
-    </Routes>
+    <LoadingPage loading={loading}>
+      <Routes>
+        <Route path="/" element={<Frontpage />} />
+        <Route path="/login" element={<Frontpage />} />
+        <Route
+          element={<PrivateRoute redirectPath="/login" isAllowed={auth} />}
+        >
+          <Route path="front" element={<Frontpage />} />
+        </Route>
+        <Route
+          path="admin"
+          element={
+            <PrivateRoute
+              redirectPath="/home"
+              isAllowed={auth && [""].includes("admin")}
+            >
+              <Frontpage />
+            </PrivateRoute>
+          }
+        />
+      </Routes>
+    </LoadingPage>
   );
 }
 

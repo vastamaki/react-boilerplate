@@ -45,6 +45,7 @@
     ]
   },
   "devDependencies": {
+    "@types/styled-components": "^5.1.25",
     "fullstack-serverless": "^0.8.0",
     "serverless-esbuild": "^1.31.0",
     "tsconfig-paths": "^4.0.0"

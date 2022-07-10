@@ -15,12 +15,8 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "baseUrl": ".",
-    "paths": {
-      "@components/*": ["src/components/*"],
-      "@views/*": ["src/views/*"],
-      "@context/*": ["src/context/*"],
-    }
+    "rootDir": "src",
+    "baseUrl": "src"
   },
   "include": ["src"]
 }

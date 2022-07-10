@@ -6,7 +6,7 @@ export const customFetch = async (path: string, params: any) => {
   let accessToken = localStorage.getItem("access_token");
   const refreshToken = localStorage.getItem("refresh_token");
   if (accessToken && refreshToken) {
-    let token = jwt(accessToken);
+    let token: any = jwt(accessToken);
     if (Date.now() / 1000 > token.exp) {
       accessToken = await refreshAccessToken();
     }

@@ -1,12 +1,19 @@
-import { useStateValue } from "@context/index";
-import { Route, Navigate } from "react-router-dom";
+import { Outlet, Navigate } from "react-router-dom";
 
-export const PrivateRoute = ({ element, ...rest }: any) => {
-  const [{ auth }]: any = useStateValue();
+interface Props {
+  isAllowed: boolean;
+  children?: JSX.Element;
+  redirectPath: string;
+}
 
-  if (auth) {
-    return <Route element={element} {...rest} />;
+export const PrivateRoute = ({
+  isAllowed,
+  children,
+  redirectPath = "/login",
+}: Props) => {
+  if (!isAllowed) {
+    return <Navigate to={{ pathname: redirectPath }} replace />;
   }
 
-  return <Navigate to={{ pathname: "/login" }} />;
+  return children ? children : <Outlet />;
 };
