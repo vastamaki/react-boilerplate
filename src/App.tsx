@@ -1,25 +1,38 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { PrivateRoute } from "@components/private-route";
+import Frontpage from "@views/frontpage";
+import React, { useEffect, useState } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { useStateValue } from "./context";
 
 function App() {
+  const [{ auth }, dispatch]: any = useStateValue();
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    (async () => {
+      const access_token = localStorage.getItem("access_token");
+
+      if (access_token) {
+        dispatch({
+          type: "SET_AUTH",
+          payload: true,
+        });
+      }
+    })();
+  }, []);
+
+  if (loading) {
+    return (
+      <div>
+        <h1>loading..</h1>
+      </div>
+    );
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Routes>
+      <Route path="/" element={<Frontpage />} />
+      <PrivateRoute />
+    </Routes>
   );
 }
 
