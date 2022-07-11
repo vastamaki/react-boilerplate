@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import { useStateValue } from "context";
 import LoadingPage from "components/loading-spinner";
+import Login from "views/login";
 
 function App() {
   const [{ auth }, dispatch]: any = useStateValue();
@@ -33,7 +34,7 @@ function App() {
     <LoadingPage loading={loading}>
       <Routes>
         <Route path="/" element={<Frontpage />} />
-        <Route path="/login" element={<Frontpage />} />
+        <Route path="/login" element={<Login />} />
         <Route
           element={<PrivateRoute redirectPath="/login" isAllowed={auth} />}
         >
